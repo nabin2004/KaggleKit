@@ -9,3 +9,34 @@ dependencies = [
     "pandas>=2.3.3",
     "scikit-learn>=1.8.0",
 ]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+lint.select = ["E", "F", "I", "W", "C901"]
+lint.ignore = []
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+
+[dependency-groups]
+dev = [
+    "black>=26.3.1",
+    "mypy>=1.20.0",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
+    "ruff>=0.15.9",
+]

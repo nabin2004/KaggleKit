@@ -1,0 +1,9 @@
+# SwissKit / Kagglebase Agent Rules
+This project is an ML boilerplate repository designed for efficient data processing, modeling, and experimentation.
+Please refer to `agents.md` in the root of the workspace for comprehensive architectural guidelines, standards, and how to execute scripts.
+
+# Core tenets
+- Maintain single-responsibility scripts in `src/`.
+- Append new model architectures strictly via `src/model_dispatcher.py`.
+- Ensure all models natively follow the scikit-learn API structure (use wrapper classes if introducing PyTorch/Keras models).
+- Read from `input/` and write trained output only to `models/`.
