@@ -28,6 +28,12 @@ uv sync --all-groups
 
 Run tools and scripts through uv so they use that environment (for example `uv run python …`, `uv run pytest`, or the `Makefile` targets, which call `uv run`).
 
+The Makefile installs uv automatically if it is missing (via the official install script; requires `curl`). Sync everything including dev tools with:
+
+```bash
+make sync
+```
+
 Commit `uv.lock` when you change dependencies. Add or upgrade packages with `uv add <package>` or `uv add --dev <package>` rather than editing lock metadata by hand.
 
 ## Usage
@@ -38,6 +44,14 @@ Commit `uv.lock` when you change dependencies. Add or upgrade packages with `uv 
 ```bash
 cd src
 uv run python train.py --fold 0 --model rf
+```
+
+From the repository root you can use Make (it ensures `uv` exists, then runs training in `src/`):
+
+```bash
+make train                  # default: fold 0, model rf
+make train FOLD=2 MODEL=log_reg
+make train-all              # folds 0–4, same MODEL (default rf)
 ```
 
 Valid models (defined in `src/model_dispatcher.py`):

@@ -49,13 +49,16 @@ Alternatively, `run.sh` can be executed to train across multiple folds. Note: en
 - **Pytest**: Used for unit and integration testing.
 
 ### Quality Workflow
-Use the provided `Makefile` to maintain high code standards:
+Use the provided `Makefile` to maintain high code standards (targets call `ensure-uv` first so uv is installed from the official script if it is missing):
 ```bash
+make sync  # uv sync --all-groups (after ensuring uv is installed)
 make fmt   # Formats code with Ruff and Black
 make lint  # Runs Ruff linting with auto-fixes
 make mypy  # Static type analysis for the src/ directory
 make test  # Runs the test suite in tests/
 make all   # Performs all the above in one go
+make train # default fold 0, model rf; override with FOLD= / MODEL=
+make train-all  # folds 0–4 with the same MODEL
 ```
 - Follow standard PEP 8 naming conventions.
 - Keep the `config.py` as the single source of truth for file paths; avoid hardcoding relative paths directly into worker scripts.
