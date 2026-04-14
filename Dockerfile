@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# ---- Install uv ----
-RUN pip install --no-cache-dir uv
+# ---- uv binary (no pip bootstrap) ----
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # ---- Set workdir ----
 WORKDIR /app
@@ -18,7 +18,8 @@ WORKDIR /app
 COPY pyproject.toml uv.lock ./
 
 # ---- Install dependencies ----
-RUN uv sync --frozen
+ENV UV_LINK_MODE=copy
+RUN uv sync --frozen --no-dev
 
 # ---- Copy rest of the code ----
 COPY . .
