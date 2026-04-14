@@ -9,3 +9,5 @@ venv/
 *.log
 input/**.csv
 models/**.bin
+*.joblib
+*catboot_info*
