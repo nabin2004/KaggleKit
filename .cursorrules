@@ -3,6 +3,7 @@ This project is an ML boilerplate repository designed for efficient data process
 Please refer to `agents.md` in the root of the workspace for comprehensive architectural guidelines, standards, and how to execute scripts.
 
 # Core tenets
+- Use **uv** for dependencies (`uv sync`, `uv add`, `uv.lock`); run commands with `uv run` or the `Makefile`.
 - Maintain single-responsibility scripts in `src/`.
 - Append new model architectures strictly via `src/model_dispatcher.py`.
 - Ensure all models natively follow the scikit-learn API structure (use wrapper classes if introducing PyTorch/Keras models).
