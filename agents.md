@@ -49,17 +49,25 @@ Alternatively, `run.sh` can be executed to train across multiple folds. Note: en
 - **Pytest**: Used for unit and integration testing.
 
 ### Quality Workflow
-Use the provided `Makefile` to maintain high code standards (targets call `ensure-uv` first so uv is installed from the official script if it is missing):
+Use the provided `Makefile` to maintain high code standards (default goal is `make help`; recipes install uv via the official script when it is missing):
 ```bash
-make sync  # uv sync --all-groups (after ensuring uv is installed)
-make fmt   # Formats code with Ruff and Black
-make lint  # Runs Ruff linting with auto-fixes
-make mypy  # Static type analysis for the src/ directory
-make test  # Runs the test suite in tests/
-make all   # Performs all the above in one go
-make train # default fold 0, model rf; override with FOLD= / MODEL=
-make train-all  # folds 0–4 with the same MODEL
+make help       # list targets and usage tips
+make preview    # print training variables and command line (no training run)
+make sync       # uv sync --all-groups (use LOCKED=1 for --frozen --locked)
+make sync-prod  # runtime dependencies only (--no-dev)
+make fmt / make lint   # may modify files (Ruff + Black)
+make fmt-check / make lint-check   # no writes (CI-style)
+make mypy
+make test
+make check      # fmt-check + lint-check + mypy + test (preferred for CI)
+make all        # fmt + lint + mypy + test (local pipeline with auto-fix)
+make train      # default FOLD=0 MODEL=rf
+make train-all  # folds in FOLDS (default 0–4), same MODEL
+make serve      # uvicorn with reload (local API)
+make doctor     # sanity-check uv + sklearn in the venv
+make clean-cache
 ```
+Use `make -n <target>` to preview shell commands without running them.
 - Follow standard PEP 8 naming conventions.
 - Keep the `config.py` as the single source of truth for file paths; avoid hardcoding relative paths directly into worker scripts.
 - Every new script interacting with data or models must support running from the command line with `argparse`.
@@ -68,4 +76,4 @@ make train-all  # folds 0–4 with the same MODEL
 ## 5. Security & Best Practices
 - Never commit actual data files inside the `input/` directory to version control (ensure `.gitignore` ignores `input/*.csv`).
 - Never commit trained models inside the `models/` directory to version control.
-- Ensure all PRs pass `make all` before being merged.
+- Ensure all PRs pass `make check` before being merged (non-destructive). Use `make all` locally when you intend Ruff/Black auto-fixes.

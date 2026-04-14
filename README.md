@@ -28,11 +28,23 @@ uv sync --all-groups
 
 Run tools and scripts through uv so they use that environment (for example `uv run python …`, `uv run pytest`, or the `Makefile` targets, which call `uv run`).
 
-The Makefile installs uv automatically if it is missing (via the official install script; requires `curl`). Sync everything including dev tools with:
+The Makefile installs uv automatically if it is missing (via the official install script; requires `curl`). Discover targets anytime with:
+
+```bash
+make help          # default goal: lists targets and tips
+make preview       # show FOLD/MODEL/FOLDS and the exact train command line
+make -n train      # print the train recipe without executing (GNU Make dry run)
+```
+
+Sync everything including dev tools with:
 
 ```bash
 make sync
 ```
+
+Reproducible installs (fail if `uv.lock` is out of date): `make sync LOCKED=1`. Runtime-only (no dev groups): `make sync-prod`.
+
+CI-style checks without modifying files: `make check` (format/lint check + mypy + tests). Local auto-fix pipeline: `make all`. API preview: `make serve` (uvicorn with reload on port 8000). Clear tool caches: `make clean-cache`.
 
 Commit `uv.lock` when you change dependencies. Add or upgrade packages with `uv add <package>` or `uv add --dev <package>` rather than editing lock metadata by hand.
 
@@ -52,6 +64,7 @@ From the repository root you can use Make (it ensures `uv` exists, then runs tra
 make train                  # default: fold 0, model rf
 make train FOLD=2 MODEL=log_reg
 make train-all              # folds 0–4, same MODEL (default rf)
+make train-all FOLDS="0 1 2" MODEL=rf   # custom fold list
 ```
 
 Valid models (defined in `src/model_dispatcher.py`):
