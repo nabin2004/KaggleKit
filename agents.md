@@ -30,15 +30,17 @@ This file contains the context and guidelines for AI agents working on this code
 3. Add a new key-value pair to the `models` dictionary, where the key is the string argument passed from the command line, and the value is the instantiated model object.
 
 ### Training a Model
-To run training, use the `train.py` script from inside the `src` directory:
+To run training, use the `train.py` script from inside the `src` directory (with `uv run` so the project environment is used):
 ```bash
 cd src
-python train.py --fold <fold_number> --model <model_name>
+uv run python train.py --fold <fold_number> --model <model_name>
 ```
 Alternatively, `run.sh` can be executed to train across multiple folds. Note: ensure `run.sh` specifies the `--model` argument if updated.
 
-### Adding New Packages
-This project manages dependencies using `pyproject.toml` (and `uv`). Add new dependencies under the `dependencies` array in `pyproject.toml`.
+### Environment and dependencies
+- Use **uv** only: sync with `uv sync` (add `--all-groups` when you need dev tools such as Ruff, Black, Mypy, and Pytest).
+- Declare packages in `pyproject.toml`; refresh the lockfile with `uv lock` after edits, or use `uv add <pkg>` / `uv add --group dev <pkg>` so `uv.lock` stays consistent.
+- Run Python and CLIs with `uv run …` (or the `Makefile`, which wraps `uv run`) so the correct `.venv` is used.
 
 ## 4. Coding Standards & Quality Tools
 - **Ruff**: Primary linter and automated fixer. Run matching scripts via `Makefile`.

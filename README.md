@@ -12,12 +12,23 @@ A robust, structural machine learning boilerplate for Kaggle competitions and fa
 
 ## Setup
 
-Ensure you have Python 3.11+ installed. Install dependencies using your preferred package manager (e.g., `uv`, `pip`):
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/). This repository standardizes on uv (not hand-maintained `requirements.txt` or ad hoc `pip install` workflows).
+
+From the repository root, create the virtual environment and install dependencies from the lockfile:
 
 ```bash
-uv pip install -e .
+uv sync
 ```
-*(Dependencies are defined in `pyproject.toml`)*
+
+That installs runtime dependencies from `pyproject.toml` / `uv.lock` into `.venv/`. For local development (formatters, linters, tests, pre-commit), include the `dev` dependency group:
+
+```bash
+uv sync --all-groups
+```
+
+Run tools and scripts through uv so they use that environment (for example `uv run python …`, `uv run pytest`, or the `Makefile` targets, which call `uv run`).
+
+Commit `uv.lock` when you change dependencies. Add or upgrade packages with `uv add <package>` or `uv add --dev <package>` rather than editing lock metadata by hand.
 
 ## Usage
 
@@ -26,7 +37,7 @@ uv pip install -e .
 
 ```bash
 cd src
-python train.py --fold 0 --model rf
+uv run python train.py --fold 0 --model rf
 ```
 
 Valid models (defined in `src/model_dispatcher.py`):
