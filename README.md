@@ -48,6 +48,15 @@ CI-style checks without modifying files: `make check` (format/lint check + mypy 
 
 Commit `uv.lock` when you change dependencies. Add or upgrade packages with `uv add <package>` or `uv add --dev <package>` rather than editing lock metadata by hand.
 
+## Kaggle Integration
+
+SwissKit can be directly cloned and run on Kaggle. It detects the Kaggle environment dynamically and handles read-only/writable directory mappings automatically.
+
+1. Create a new notebook on Kaggle.
+2. Upload `notebook/kaggle_entrypoint.ipynb` (or copy its contents).
+3. Update the `KAGGLE_DATASET_DIR` environment variable in the notebook to point to your specific Kaggle dataset path over in `/kaggle/input/`.
+4. Run the notebook to fetch the code, prepare the data, and train models via the standard SwissKit pipeline.
+
 ## Usage
 
 1. **Configure Parameters**: Update file paths in `src/config.py`.
